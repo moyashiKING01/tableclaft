@@ -1,0 +1,1286 @@
+<!DOCTYPE html>
+<html lang="ja" class="h-full bg-slate-950 text-slate-100">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+  <!-- Primary SEO Meta Tags -->
+  <title>TableCraft | 美しい表変換・Markdown/CSV/Excel整形・Wordリッチ装飾コピー無料Webツール</title>
+  <meta name="title" content="TableCraft | 美しい表変換・Markdown/CSV/Excel整形・Wordリッチ装飾コピー無料Webツール">
+  <meta name="description" content="Markdown表、CSV、Excel/スプレッドシートのコピペ（TSV）を一瞬で相互変換。Notion風やModern Darkなど美しいテーマでプレビューし、Word・Googleドキュメントへ書式を保ったまま一発リッチコピー＆高解像度PNG保存ができる無料Webツール。完全クライアントサイド処理で機密データも安心。">
+  <meta name="keywords" content="Markdown 表 変換, CSV 表 整形, Excel Markdown 変換, スプレッドシート 表 Word 綺麗, Markdown table generator, CSV to Markdown, 表デザイン, Notion 表, 無料 Webツール">
+  <meta name="author" content="TableCraft Studio">
+  <meta name="robots" content="index, follow">
+
+  <!-- Open Graph / Facebook -->
+  <meta property="og:type" content="website">
+  <meta property="og:url" content="https://tablecraft.vercel.app/">
+  <meta property="og:title" content="TableCraft | 美しい表変換・デザイン整形・高解像度画像出力ツール">
+  <meta property="og:description" content="Markdown、CSV、Excelを一瞬で相互変換。WordやGoogle Docsにスタイルを保持したまま貼り付けられるリッチHTMLコピー対応！">
+  <meta property="og:image" content="https://images.unsplash.com/photo-1551288049-bebda4e38f71?auto=format&fit=crop&w=1200&h=630&q=80">
+
+  <!-- Twitter Card -->
+  <meta property="twitter:card" content="summary_large_image">
+  <meta property="twitter:url" content="https://tablecraft.vercel.app/">
+  <meta property="twitter:title" content="TableCraft | 美しい表変換・デザイン整形・高解像度画像出力ツール">
+  <meta property="twitter:description" content="Markdown、CSV、Excelを一瞬で相互変換。WordやGoogle Docsにスタイルを保持したまま貼り付けられるリッチHTMLコピー対応！">
+  <meta property="twitter:image" content="https://images.unsplash.com/photo-1551288049-bebda4e38f71?auto=format&fit=crop&w=1200&h=630&q=80">
+
+  <!-- Schema.org JSON-LD Structured Data for Google Rich Snippets -->
+  <script type="application/ld+json">
+  {
+    "@context": "https://schema.org",
+    "@type": "WebApplication",
+    "name": "TableCraft",
+    "url": "https://tablecraft.vercel.app/",
+    "description": "Markdown、CSV、Excel/TSVを一瞬で相互変換し、美しいテーマでプレビュー・Word/Docs対応装飾コピー・PNG画像保存ができる高機能Webツール。",
+    "applicationCategory": "DeveloperApplication, BusinessApplication",
+    "operatingSystem": "All",
+    "browserRequirements": "Requires JavaScript. Requires HTML5.",
+    "offers": {
+      "@type": "Offer",
+      "price": "0",
+      "priceCurrency": "USD"
+    }
+  }
+  </script>
+
+  <!-- Google AdSense Tag Placeholder (本番デプロイ時にあなたの AdSense ID に差し替えてください) -->
+  <!--
+  <script async src="https://pagead2.googlesyndication.com/pagead/js/adsbygoogle.js?client=ca-pub-XXXXXXXXXXXXXXXX" crossorigin="anonymous"></script>
+  -->
+
+  <!-- Tailwind CSS CDN -->
+  <script src="https://cdn.tailwindcss.com"></script>
+  <script>
+    tailwind.config = {
+      darkMode: 'class',
+      theme: {
+        extend: {
+          fontFamily: {
+            sans: ['"Plus Jakarta Sans"', 'Inter', 'system-ui', '-apple-system', 'sans-serif'],
+            mono: ['"JetBrains Mono"', 'Menlo', 'Monaco', 'Consolas', 'monospace'],
+            serif: ['Georgia', 'Cambria', '"Times New Roman"', 'serif']
+          },
+          colors: {
+            brand: {
+              50: '#eef2ff',
+              100: '#e0e7ff',
+              400: '#818cf8',
+              500: '#6366f1',
+              600: '#4f46e5',
+              700: '#4338ca'
+            }
+          }
+        }
+      }
+    }
+  </script>
+
+  <!-- Google Fonts -->
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=JetBrains+Mono:wght@400;500;600&family=Plus+Jakarta+Sans:wght@400;500;600;700;800&family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
+
+  <!-- Lucide Icons CDN -->
+  <script src="https://unpkg.com/lucide@latest"></script>
+
+  <!-- html2canvas CDN -->
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/html2canvas/1.4.1/html2canvas.min.js"></script>
+
+  <style>
+    /* Custom Scrollbar */
+    ::-webkit-scrollbar {
+      width: 8px;
+      height: 8px;
+    }
+    ::-webkit-scrollbar-track {
+      background: rgba(15, 23, 42, 0.6);
+    }
+    ::-webkit-scrollbar-thumb {
+      background: rgba(100, 116, 139, 0.5);
+      border-radius: 4px;
+    }
+    ::-webkit-scrollbar-thumb:hover {
+      background: rgba(148, 163, 184, 0.8);
+    }
+
+    /* Editable focus */
+    [contenteditable="true"]:focus {
+      outline: 2px solid #6366f1;
+      outline-offset: -1px;
+      background-color: rgba(99, 102, 241, 0.08) !important;
+      border-radius: 2px;
+    }
+
+    /* 1. Notion Clean */
+    .theme-notion {
+      background-color: #ffffff;
+      color: #37352f;
+      border: 1px solid #e5e7eb;
+      font-family: 'Inter', -apple-system, sans-serif;
+    }
+    .theme-notion th {
+      background-color: #f7f6f3;
+      color: #787774;
+      font-weight: 600;
+      border: 1px solid #e5e7eb;
+    }
+    .theme-notion td {
+      border: 1px solid #e5e7eb;
+      color: #37352f;
+    }
+    .theme-notion tr:hover td {
+      background-color: #fbfbfa;
+    }
+
+    /* 2. Modern Dark */
+    .theme-modern-dark {
+      background-color: #0f172a;
+      color: #f8fafc;
+      border: 1px solid #334155;
+      font-family: 'Plus Jakarta Sans', sans-serif;
+    }
+    .theme-modern-dark th {
+      background-color: #1e293b;
+      color: #38bdf8;
+      font-weight: 600;
+      border: 1px solid #334155;
+    }
+    .theme-modern-dark td {
+      border: 1px solid #334155;
+      color: #e2e8f0;
+    }
+    .theme-modern-dark tr:hover td {
+      background-color: rgba(30, 41, 59, 0.6);
+    }
+
+    /* 3. Elegant Indigo */
+    .theme-elegant-indigo {
+      background-color: #ffffff;
+      color: #1e1b4b;
+      border: 1px solid #c7d2fe;
+      box-shadow: 0 10px 25px -5px rgba(79, 70, 229, 0.1);
+      font-family: 'Plus Jakarta Sans', sans-serif;
+    }
+    .theme-elegant-indigo th {
+      background: linear-gradient(135deg, #4f46e5 0%, #3b82f6 100%);
+      color: #ffffff;
+      font-weight: 600;
+      border: 1px solid #6366f1;
+    }
+    .theme-elegant-indigo td {
+      border: 1px solid #e0e7ff;
+      color: #312e81;
+    }
+    .theme-elegant-indigo tr:nth-child(even) td {
+      background-color: #f8faff;
+    }
+    .theme-elegant-indigo tr:hover td {
+      background-color: #eef2ff;
+    }
+
+    /* 4. Stripe Zebra */
+    .theme-stripe-zebra {
+      background-color: #ffffff;
+      color: #1f2937;
+      border: 1px solid #cbd5e1;
+      font-family: 'Inter', sans-serif;
+    }
+    .theme-stripe-zebra th {
+      background-color: #1e293b;
+      color: #f8fafc;
+      font-weight: 600;
+      border: 1px solid #334155;
+    }
+    .theme-stripe-zebra td {
+      border: 1px solid #cbd5e1;
+      color: #334155;
+    }
+    .theme-stripe-zebra tr:nth-child(even) td {
+      background-color: #f1f5f9;
+    }
+    .theme-stripe-zebra tr:hover td {
+      background-color: #e2e8f0;
+    }
+
+    /* 5. Minimalist */
+    .theme-minimalist {
+      background-color: #ffffff;
+      color: #111827;
+      border-top: 2px solid #111827;
+      border-bottom: 2px solid #111827;
+      font-family: Georgia, serif;
+    }
+    .theme-minimalist th {
+      border-bottom: 1px solid #111827;
+      color: #111827;
+      font-weight: 700;
+      text-transform: uppercase;
+      font-size: 0.75rem;
+      letter-spacing: 0.05em;
+      background-color: transparent;
+    }
+    .theme-minimalist td {
+      border-bottom: 1px solid #f3f4f6;
+      color: #374151;
+    }
+    .theme-minimalist tr:last-child td {
+      border-bottom: none;
+    }
+    .theme-minimalist tr:hover td {
+      background-color: #fafafa;
+    }
+
+    @keyframes pulse-subtle {
+      0%, 100% { opacity: 1; }
+      50% { opacity: 0.4; }
+    }
+    .animate-pulse-subtle {
+      animation: pulse-subtle 2s cubic-bezier(0.4, 0, 0.6, 1) infinite;
+    }
+  </style>
+</head>
+<body class="h-full flex flex-col font-sans antialiased bg-slate-950 text-slate-100 selection:bg-brand-500 selection:text-white">
+
+  <!-- ==================== HEADER NAVIGATION ==================== -->
+  <header class="sticky top-0 z-40 w-full border-b border-slate-800 bg-slate-950/80 backdrop-blur-md">
+    <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 h-16 flex items-center justify-between">
+      <!-- Logo & Brand -->
+      <div class="flex items-center gap-3">
+        <div class="w-10 h-10 rounded-xl bg-gradient-to-tr from-brand-600 via-indigo-500 to-cyan-400 p-0.5 shadow-lg shadow-brand-500/20">
+          <div class="w-full h-full bg-slate-950 rounded-[10px] flex items-center justify-center">
+            <i data-lucide="table-2" class="w-5 h-5 text-brand-400"></i>
+          </div>
+        </div>
+        <div>
+          <div class="flex items-center gap-2">
+            <h1 class="text-xl font-extrabold tracking-tight bg-gradient-to-r from-white via-slate-200 to-slate-400 bg-clip-text text-transparent">
+              TableCraft
+            </h1>
+            <span class="px-2 py-0.5 text-[10px] font-bold uppercase tracking-wider bg-brand-500/10 text-brand-400 border border-brand-500/20 rounded-full">
+              v1.0 Pro
+            </span>
+          </div>
+          <p class="text-xs text-slate-400 hidden sm:block">Markdown / CSV / Excel 一瞬変換 & デザイン整形スイート</p>
+        </div>
+      </div>
+
+      <!-- Trust Badge & Monetization Buttons -->
+      <div class="flex items-center gap-3">
+        <!-- Client-Side Security Badge -->
+        <div class="hidden md:flex items-center gap-2 px-3 py-1.5 rounded-full bg-emerald-500/10 border border-emerald-500/20 text-emerald-400 text-xs font-medium">
+          <span class="w-2 h-2 rounded-full bg-emerald-400 animate-pulse-subtle"></span>
+          <span>🔒 100% Client-Side Security</span>
+        </div>
+
+        <!-- Buy Me a Coffee Button (ユーザーの実際のリンクを設定可能) -->
+        <a href="https://www.buymeacoffee.com/" target="_blank" rel="noopener noreferrer" class="flex items-center gap-2 px-3.5 py-1.5 rounded-lg bg-gradient-to-r from-amber-400 to-amber-500 hover:from-amber-300 hover:to-amber-400 text-slate-950 font-semibold text-xs transition-all shadow-md shadow-amber-500/10 hover:shadow-amber-500/20 active:scale-95">
+          <i data-lucide="coffee" class="w-4 h-4 text-slate-950"></i>
+          <span class="hidden sm:inline">Buy Me a Coffee</span>
+        </a>
+      </div>
+    </div>
+  </header>
+
+  <!-- ==================== SPONSOR / ADSENSE BANNER ==================== -->
+  <div class="w-full bg-slate-900/40 border-b border-slate-800/80 py-2.5">
+    <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 flex items-center justify-between text-xs">
+      <div class="flex items-center gap-2 text-slate-400">
+        <span class="px-1.5 py-0.5 rounded bg-slate-800 text-slate-400 text-[9px] font-semibold tracking-wider">AD / SPONSOR</span>
+        <span>🚀 <strong>TableCraft Pro</strong> — チーム向けAPI連携・自動一括変換プラン準備中</span>
+      </div>
+      <a href="#" onclick="openModal('privacy'); return false;" class="text-brand-400 hover:text-brand-300 font-medium hidden md:inline-flex items-center gap-1">
+        プライバシーと広告について <i data-lucide="shield" class="w-3 h-3"></i>
+      </a>
+    </div>
+  </div>
+
+  <!-- ==================== MAIN APPLICATION WORKSPACE ==================== -->
+  <main class="flex-1 max-w-7xl w-full mx-auto px-4 sm:px-6 lg:px-8 py-6 flex flex-col gap-6">
+
+    <!-- Security & Privacy Guarantee Bar -->
+    <div class="bg-gradient-to-r from-brand-950/40 via-slate-900/60 to-slate-950 border border-brand-500/20 rounded-xl p-3 sm:px-4 flex items-center justify-between">
+      <div class="flex items-center gap-2.5 text-xs text-slate-300">
+        <div class="w-7 h-7 rounded-lg bg-brand-500/10 border border-brand-500/20 flex items-center justify-center text-brand-400 shrink-0">
+          <i data-lucide="shield-check" class="w-4 h-4"></i>
+        </div>
+        <div>
+          <span class="font-semibold text-white">🔒 100% Client-Side Privacy:</span>
+          <span class="text-slate-400 ml-1">入力データは外部サーバーに一切送信されず、すべてお使いのブラウザ内部でのみ即座に処理されます。機密データも安心。</span>
+        </div>
+      </div>
+      <span class="hidden lg:inline-flex text-[11px] font-mono text-brand-400 bg-brand-500/10 px-2.5 py-1 rounded-md border border-brand-500/20">Zero-Tracking</span>
+    </div>
+
+    <!-- Workspace Grid -->
+    <div class="grid grid-cols-1 lg:grid-cols-12 gap-6 flex-1 items-start">
+
+      <!-- ==================== LEFT PANEL: SMART INPUT ==================== -->
+      <section class="lg:col-span-5 flex flex-col gap-4 bg-slate-900/50 border border-slate-800 rounded-2xl p-4 sm:p-5 backdrop-blur-sm shadow-xl">
+        <div class="flex items-center justify-between pb-3 border-b border-slate-800">
+          <div class="flex items-center gap-2">
+            <i data-lucide="file-input" class="w-4 h-4 text-brand-400"></i>
+            <h2 class="font-bold text-sm text-slate-200">スマート入力エリア</h2>
+          </div>
+          <div id="detected-format-badge" class="px-2.5 py-0.5 rounded-full text-xs font-mono font-medium bg-indigo-500/10 text-indigo-400 border border-indigo-500/20 flex items-center gap-1.5">
+            <span class="w-1.5 h-1.5 rounded-full bg-indigo-400"></span>
+            <span id="detected-format-text">自動判別中...</span>
+          </div>
+        </div>
+
+        <!-- Sample Loaders -->
+        <div class="flex flex-wrap items-center justify-between gap-2">
+          <div class="flex flex-wrap items-center gap-1.5">
+            <span class="text-[11px] text-slate-400 font-medium mr-1">サンプル:</span>
+            <button onclick="loadSample('markdown')" class="px-2.5 py-1 rounded-lg bg-slate-800 hover:bg-slate-700 text-slate-300 hover:text-white text-xs transition border border-slate-700/60 flex items-center gap-1">
+              <i data-lucide="code" class="w-3 h-3 text-cyan-400"></i> Markdown
+            </button>
+            <button onclick="loadSample('csv')" class="px-2.5 py-1 rounded-lg bg-slate-800 hover:bg-slate-700 text-slate-300 hover:text-white text-xs transition border border-slate-700/60 flex items-center gap-1">
+              <i data-lucide="file-spreadsheet" class="w-3 h-3 text-emerald-400"></i> CSV
+            </button>
+            <button onclick="loadSample('excel')" class="px-2.5 py-1 rounded-lg bg-slate-800 hover:bg-slate-700 text-slate-300 hover:text-white text-xs transition border border-slate-700/60 flex items-center gap-1">
+              <i data-lucide="sheet" class="w-3 h-3 text-amber-400"></i> Excel/TSV
+            </button>
+          </div>
+          <button onclick="clearInput()" class="px-2 py-1 rounded-lg hover:bg-rose-500/10 text-slate-400 hover:text-rose-400 text-xs transition flex items-center gap-1 border border-transparent hover:border-rose-500/20">
+            <i data-lucide="trash-2" class="w-3 h-3"></i> クリア
+          </button>
+        </div>
+
+        <!-- Textarea -->
+        <div class="relative flex-1 min-h-[300px] flex flex-col">
+          <textarea
+            id="raw-input"
+            class="w-full h-80 lg:h-[460px] p-4 bg-slate-950/80 border border-slate-800 rounded-xl font-mono text-xs text-slate-200 placeholder-slate-600 focus:outline-none focus:border-brand-500 focus:ring-1 focus:ring-brand-500 resize-none transition"
+            placeholder="ここにMarkdown表、CSV、またはExcel/スプレッドシートからコピーしたセルを貼り付けてください..."
+            spellcheck="false"
+          ></textarea>
+        </div>
+
+        <div class="flex items-center justify-between text-xs text-slate-400 pt-2 border-t border-slate-800/80">
+          <div class="flex items-center gap-3">
+            <span id="input-stats-rows">0 行</span>
+            <span>•</span>
+            <span id="input-stats-cols">0 列</span>
+            <span>•</span>
+            <span id="input-stats-chars">0 文字</span>
+          </div>
+          <button onclick="syncPreviewToInput()" class="text-xs text-brand-400 hover:text-brand-300 font-medium flex items-center gap-1">
+            <i data-lucide="refresh-cw" class="w-3 h-3"></i> プレビューから再取得
+          </button>
+        </div>
+      </section>
+
+      <!-- ==================== RIGHT PANEL: PREVIEW & EXPORT ==================== -->
+      <section class="lg:col-span-7 flex flex-col gap-4">
+
+        <!-- Theme Selector -->
+        <div class="bg-slate-900/50 border border-slate-800 rounded-2xl p-4 backdrop-blur-sm shadow-xl">
+          <div class="flex items-center justify-between mb-3">
+            <div class="flex items-center gap-2">
+              <i data-lucide="palette" class="w-4 h-4 text-indigo-400"></i>
+              <h2 class="font-bold text-sm text-slate-200">デザインテーマ選択</h2>
+            </div>
+            <span class="text-xs text-slate-400">クリックで瞬時に着せ替え</span>
+          </div>
+          <div class="grid grid-cols-2 sm:grid-cols-5 gap-2" id="theme-button-group">
+            <button onclick="setTheme('notion')" id="theme-btn-notion" class="theme-btn flex flex-col items-center gap-1.5 p-2.5 rounded-xl border border-brand-500 bg-brand-500/10 text-brand-300 text-xs font-semibold transition active:scale-95 shadow-sm">
+              <div class="w-full h-4 rounded bg-white border border-slate-300 flex items-center px-1 gap-1">
+                <span class="w-2 h-1.5 bg-slate-300 rounded-xs"></span>
+                <span class="w-4 h-1 bg-slate-200 rounded-xs"></span>
+              </div>
+              <span>Notion Clean</span>
+            </button>
+            <button onclick="setTheme('modern-dark')" id="theme-btn-modern-dark" class="theme-btn flex flex-col items-center gap-1.5 p-2.5 rounded-xl border border-slate-800 bg-slate-800/40 hover:bg-slate-800 text-slate-400 hover:text-slate-200 text-xs font-semibold transition active:scale-95">
+              <div class="w-full h-4 rounded bg-slate-900 border border-slate-700 flex items-center px-1 gap-1">
+                <span class="w-2 h-1.5 bg-cyan-400 rounded-xs"></span>
+                <span class="w-4 h-1 bg-slate-600 rounded-xs"></span>
+              </div>
+              <span>Modern Dark</span>
+            </button>
+            <button onclick="setTheme('elegant-indigo')" id="theme-btn-elegant-indigo" class="theme-btn flex flex-col items-center gap-1.5 p-2.5 rounded-xl border border-slate-800 bg-slate-800/40 hover:bg-slate-800 text-slate-400 hover:text-slate-200 text-xs font-semibold transition active:scale-95">
+              <div class="w-full h-4 rounded bg-gradient-to-r from-indigo-500 to-blue-500 flex items-center px-1 gap-1">
+                <span class="w-2 h-1.5 bg-white/80 rounded-xs"></span>
+                <span class="w-4 h-1 bg-white/40 rounded-xs"></span>
+              </div>
+              <span>Elegant Indigo</span>
+            </button>
+            <button onclick="setTheme('stripe-zebra')" id="theme-btn-stripe-zebra" class="theme-btn flex flex-col items-center gap-1.5 p-2.5 rounded-xl border border-slate-800 bg-slate-800/40 hover:bg-slate-800 text-slate-400 hover:text-slate-200 text-xs font-semibold transition active:scale-95">
+              <div class="w-full h-4 rounded bg-slate-100 border border-slate-300 flex flex-col justify-between py-0.5 px-1">
+                <span class="w-full h-1 bg-slate-800 rounded-xs"></span>
+                <span class="w-full h-1 bg-slate-300 rounded-xs"></span>
+              </div>
+              <span>Stripe Zebra</span>
+            </button>
+            <button onclick="setTheme('minimalist')" id="theme-btn-minimalist" class="theme-btn flex flex-col items-center gap-1.5 p-2.5 rounded-xl border border-slate-800 bg-slate-800/40 hover:bg-slate-800 text-slate-400 hover:text-slate-200 text-xs font-semibold transition active:scale-95 col-span-2 sm:col-span-1">
+              <div class="w-full h-4 rounded bg-white border-y border-slate-800 flex items-center justify-center">
+                <span class="w-6 h-0.5 bg-slate-800"></span>
+              </div>
+              <span>Minimalist</span>
+            </button>
+          </div>
+        </div>
+
+        <!-- Action Bar -->
+        <div class="bg-slate-900/50 border border-slate-800 rounded-2xl p-4 backdrop-blur-sm shadow-xl flex flex-col sm:flex-row items-stretch sm:items-center justify-between gap-3">
+          <div class="flex items-center gap-2">
+            <i data-lucide="share-2" class="w-4 h-4 text-brand-400"></i>
+            <h2 class="font-bold text-sm text-slate-200">ワンクリック出力</h2>
+          </div>
+          <div class="flex flex-wrap items-center gap-2">
+            <button onclick="copyAsMarkdown()" class="flex-1 sm:flex-initial px-3 py-1.5 rounded-xl bg-slate-800 hover:bg-slate-700 text-slate-200 text-xs font-semibold transition border border-slate-700 flex items-center justify-center gap-1.5 active:scale-95">
+              <i data-lucide="clipboard" class="w-3.5 h-3.5 text-cyan-400"></i>
+              <span>Markdown</span>
+            </button>
+            <button onclick="copyAsRichHTML()" class="flex-1 sm:flex-initial px-3.5 py-1.5 rounded-xl bg-gradient-to-r from-brand-600 to-indigo-600 hover:from-brand-500 hover:to-indigo-500 text-white text-xs font-bold transition shadow-lg shadow-brand-500/20 flex items-center justify-center gap-1.5 active:scale-95">
+              <i data-lucide="sparkles" class="w-3.5 h-3.5 text-amber-300"></i>
+              <span>リッチHTML (Word/Docs)</span>
+            </button>
+            <button onclick="copyAsCSV()" class="flex-1 sm:flex-initial px-3 py-1.5 rounded-xl bg-slate-800 hover:bg-slate-700 text-slate-200 text-xs font-semibold transition border border-slate-700 flex items-center justify-center gap-1.5 active:scale-95">
+              <i data-lucide="file-text" class="w-3.5 h-3.5 text-emerald-400"></i>
+              <span>CSV</span>
+            </button>
+            <button onclick="copyAsJSON()" class="flex-1 sm:flex-initial px-3 py-1.5 rounded-xl bg-slate-800 hover:bg-slate-700 text-slate-200 text-xs font-semibold transition border border-slate-700 flex items-center justify-center gap-1.5 active:scale-95">
+              <i data-lucide="braces" class="w-3.5 h-3.5 text-purple-400"></i>
+              <span>JSON</span>
+            </button>
+            <button onclick="downloadAsPNG()" class="flex-1 sm:flex-initial px-3.5 py-1.5 rounded-xl bg-slate-800 hover:bg-slate-700 text-slate-100 text-xs font-bold transition border border-slate-700 flex items-center justify-center gap-1.5 active:scale-95">
+              <i data-lucide="download" class="w-3.5 h-3.5 text-amber-400"></i>
+              <span>PNG画像</span>
+            </button>
+          </div>
+        </div>
+
+        <!-- Preview & Live Edit Area -->
+        <div class="bg-slate-900/50 border border-slate-800 rounded-2xl p-4 sm:p-5 backdrop-blur-sm shadow-xl flex flex-col gap-3">
+          <div class="flex flex-wrap items-center justify-between gap-2 pb-3 border-b border-slate-800">
+            <div class="flex items-center gap-2">
+              <i data-lucide="eye" class="w-4 h-4 text-brand-400"></i>
+              <h2 class="font-bold text-sm text-slate-200">プレビュー & ダイレクト編集</h2>
+              <span class="text-[11px] text-slate-400 bg-slate-800/80 px-2 py-0.5 rounded-md border border-slate-700/60" id="preview-dim-badge">0 行 × 0 列</span>
+            </div>
+            <div class="flex items-center gap-2">
+              <button onclick="addColumn()" class="px-2.5 py-1 rounded-lg bg-slate-800 hover:bg-slate-700 text-slate-300 hover:text-white text-xs font-medium transition border border-slate-700 flex items-center gap-1">
+                <i data-lucide="plus" class="w-3 h-3 text-brand-400"></i> 列追加
+              </button>
+              <button onclick="addRow()" class="px-2.5 py-1 rounded-lg bg-slate-800 hover:bg-slate-700 text-slate-300 hover:text-white text-xs font-medium transition border border-slate-700 flex items-center gap-1">
+                <i data-lucide="plus" class="w-3 h-3 text-brand-400"></i> 行追加
+              </button>
+            </div>
+          </div>
+
+          <div id="table-capture-wrapper" class="p-4 sm:p-6 rounded-xl bg-slate-950/60 border border-slate-800/80 overflow-x-auto">
+            <div id="table-capture-card" class="inline-block min-w-full align-middle transition-colors duration-200 p-2 rounded-lg">
+              <table id="preview-table" class="theme-notion min-w-full text-sm rounded-lg overflow-hidden transition-all duration-200"></table>
+            </div>
+          </div>
+
+          <div class="flex items-center justify-between text-[11px] text-slate-400 pt-2">
+            <div class="flex items-center gap-1.5">
+              <i data-lucide="info" class="w-3.5 h-3.5 text-slate-500"></i>
+              <span>ヒント: セルをクリックして直接テキストを編集できます。ヘッダーのアイコンで行・列の削除やテキスト配置の変更が可能です。</span>
+            </div>
+          </div>
+        </div>
+
+      </section>
+    </div>
+
+    <!-- SEO & Usage Guide Section (検索エンジン上位表示のためのコンテンツ) -->
+    <section class="mt-8 bg-slate-900/30 border border-slate-800/80 rounded-2xl p-6 sm:p-8 text-xs text-slate-400 flex flex-col gap-6">
+      <div>
+        <h3 class="text-sm font-bold text-slate-200 mb-2">TableCraft（テーブルクラフト）とは？</h3>
+        <p class="leading-relaxed">
+          TableCraft は、エンジニア、研究者、ビジネスパーソンのための無料オンライン表変換・整形スタジオです。
+          GitHubのMarkdownテーブル、ExcelやGoogleスプレッドシートからコピーしたTSVデータ、CSV形式のデータを瞬時に相互変換できます。
+          さらに、Notion風の洗練されたテーマやModern Darkスタイルを適用し、Microsoft WordやGoogle Docs、Gmailに装飾をそのまま貼り付けられる「リッチHTMLコピー」や、プレゼン資料用の高解像度PNG画像エクスポートに対応しています。
+        </p>
+      </div>
+
+      <div class="grid grid-cols-1 md:grid-cols-3 gap-4 pt-4 border-t border-slate-800/60">
+        <div>
+          <h4 class="font-bold text-slate-300 mb-1 flex items-center gap-1.5">
+            <i data-lucide="sparkles" class="w-3.5 h-3.5 text-brand-400"></i> Wordに綺麗にコピペ
+          </h4>
+          <p class="text-slate-400 leading-relaxed">
+            通常のテキスト貼り付けだと崩れてしまう表デザインを、インラインCSS付きHTMLとしてクリップボードに格納。WordやGoogleドキュメントにそのまま美麗ペーストできます。
+          </p>
+        </div>
+        <div>
+          <h4 class="font-bold text-slate-300 mb-1 flex items-center gap-1.5">
+            <i data-lucide="shield-check" class="w-3.5 h-3.5 text-emerald-400"></i> 100% 機密保持
+          </h4>
+          <p class="text-slate-400 leading-relaxed">
+            すべてのパース・変換処理はお使いのブラウザ内部（JavaScript）のみで実行されます。社外秘データや大学の研究データが外部サーバーへ送信されることは一切ありません。
+          </p>
+        </div>
+        <div>
+          <h4 class="font-bold text-slate-300 mb-1 flex items-center gap-1.5">
+            <i data-lucide="image" class="w-3.5 h-3.5 text-amber-400"></i> 高解像度PNG保存
+          </h4>
+          <p class="text-slate-400 leading-relaxed">
+            CanvaやPowerPoint、Keynote、SNS投稿に最適な2倍解像度のPNG画像をワンクリックで生成・ダウンロードできます。
+          </p>
+        </div>
+      </div>
+    </section>
+
+  </main>
+
+  <!-- ==================== TOAST NOTIFICATION ==================== -->
+  <div id="toast-container" class="fixed bottom-6 right-6 z-50 flex flex-col gap-2 pointer-events-none"></div>
+
+  <!-- ==================== PRIVACY & TERMS MODAL (AdSense審査対応) ==================== -->
+  <div id="legal-modal" class="fixed inset-0 z-50 bg-slate-950/80 backdrop-blur-sm hidden items-center justify-center p-4">
+    <div class="bg-slate-900 border border-slate-800 rounded-2xl max-w-2xl w-full p-6 max-h-[80vh] overflow-y-auto shadow-2xl flex flex-col gap-4 text-xs text-slate-300">
+      <div class="flex items-center justify-between pb-3 border-b border-slate-800">
+        <h3 class="text-base font-bold text-white flex items-center gap-2">
+          <i data-lucide="shield" class="w-4 h-4 text-brand-400"></i>
+          プライバシーポリシー・利用規約
+        </h3>
+        <button onclick="closeModal('privacy')" class="p-1 rounded hover:bg-slate-800 text-slate-400 hover:text-white transition">
+          <i data-lucide="x" class="w-5 h-5"></i>
+        </button>
+      </div>
+
+      <div class="space-y-4 leading-relaxed">
+        <div>
+          <h4 class="font-bold text-slate-200 mb-1">1. データの取り扱い・プライバシーの保護</h4>
+          <p>TableCraft（以下「当ツール」）では、利用者が入力・編集・変換したすべてのテキストおよびテーブルデータは、利用者の端末（ブラウザ）内部でのみ処理されます。当ツールのサーバーにデータが送信、保存、または収集されることは一切ありません。</p>
+        </div>
+
+        <div>
+          <h4 class="font-bold text-slate-200 mb-1">2. 広告配信およびCookieについて</h4>
+          <p>当サイトでは、第三者配信の広告サービス（Google AdSense等）を利用する場合があります。広告配信事業者は、利用者の興味に応じた広告を表示するためにCookie（クッキー）を使用することがあります。利用者はブラウザの設定によりCookieを無効にすることが可能です。</p>
+        </div>
+
+        <div>
+          <h4 class="font-bold text-slate-200 mb-1">3. 免責事項</h4>
+          <p>当ツールの利用により生じた直接的、間接的な損害等について、開発者は一切の責任を負いません。生成されたデータや画像は利用者の責任においてご利用ください。</p>
+        </div>
+
+        <div>
+          <h4 class="font-bold text-slate-200 mb-1">4. お問い合わせ</h4>
+          <p>当ツールに関するお問い合わせ、不具合報告、機能要望は GitHub リポジトリの Issue または開発者サポート窓口よりご連絡ください。</p>
+        </div>
+      </div>
+
+      <div class="pt-3 border-t border-slate-800 flex justify-end">
+        <button onclick="closeModal('privacy')" class="px-4 py-2 rounded-xl bg-brand-600 hover:bg-brand-500 text-white font-semibold transition">
+          閉じる
+        </button>
+      </div>
+    </div>
+  </div>
+
+  <!-- ==================== FOOTER ==================== -->
+  <footer class="w-full border-t border-slate-800/80 bg-slate-950/80 py-6 mt-12">
+    <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 flex flex-col sm:flex-row items-center justify-between gap-4 text-xs text-slate-400">
+      <div class="flex items-center gap-2">
+        <i data-lucide="cpu" class="w-4 h-4 text-brand-400"></i>
+        <span><strong>TableCraft Studio</strong> — 2026 TableCraft. All rights reserved.</span>
+      </div>
+      <div class="flex items-center gap-4">
+        <button onclick="openModal('privacy')" class="hover:text-slate-200 transition">プライバシーポリシー / 利用規約</button>
+        <span>•</span>
+        <span>MIT License</span>
+        <span>•</span>
+        <a href="https://www.buymeacoffee.com/" target="_blank" rel="noopener noreferrer" class="text-amber-400 hover:text-amber-300 font-semibold flex items-center gap-1">
+          <i data-lucide="coffee" class="w-3.5 h-3.5"></i> Support Project
+        </a>
+      </div>
+    </div>
+  </footer>
+
+  <!-- ==================== APPLICATION LOGIC ==================== -->
+  <script>
+    const state = {
+      headers: ["機能", "ステータス", "優先度", "評価"],
+      alignments: ["left", "center", "center", "right"],
+      rows: [
+        ["クライアントサイド変換", "完了", "高", "9.8"],
+        ["デザインテーマエンジン", "稼働中", "中", "9.5"],
+        ["Word/Docs用リッチHTMLコピー", "完了", "最重要", "10.0"],
+        ["高解像度PNG画像エクスポート", "準備完了", "高", "9.2"]
+      ],
+      currentTheme: 'notion',
+      detectedFormat: 'markdown'
+    };
+
+    const SAMPLES = {
+      markdown: `| 機能 | ステータス | 優先度 | 評価 |
+| :--- | :---: | :---: | ---: |
+| クライアントサイド変換 | 完了 | 高 | 9.8 |
+| デザインテーマエンジン | 稼働中 | 中 | 9.5 |
+| Word/Docs用リッチHTMLコピー | 完了 | 最重要 | 10.0 |
+| 高解像度PNG画像エクスポート | 準備完了 | 高 | 9.2 |`,
+
+      csv: `プロダクト,カテゴリ,単価,在庫数,満足度
+"TableCraft Pro",開発者ツール,2900,120,99%
+"DataMorph",業務効率化,1900,85,94%
+"PixelGrid",デザインアセット,1250,300,97%
+"CloudSync API",インフラ,4900,45,91%`,
+
+      excel: `氏名	所属部署	役職	評価	稼働状況
+佐藤 健太	エンジニアリング	リードアーキテクト	Sランク	稼働中
+田中 美咲	プロダクト企画	ディレクター	Aランク	稼働中
+鈴木 翔平	UI/UXデザイン	シニアデザイナー	Sランク	稼働中
+高橋 涼子	SRE/インフラ	スペシャリスト	Aランク	稼働中`
+    };
+
+    const THEME_INLINE_STYLES = {
+      'notion': {
+        table: 'border-collapse: collapse; width: 100%; font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Helvetica, Arial, sans-serif; font-size: 14px; color: #37352f; border: 1px solid #e5e7eb;',
+        th: 'padding: 10px 14px; border: 1px solid #e5e7eb; font-weight: 600; color: #787774; background-color: #f7f6f3; font-size: 13px;',
+        td: 'padding: 10px 14px; border: 1px solid #e5e7eb; color: #37352f;',
+        stripeTd: 'padding: 10px 14px; border: 1px solid #e5e7eb; color: #37352f; background-color: #ffffff;'
+      },
+      'modern-dark': {
+        table: 'border-collapse: collapse; width: 100%; font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif; font-size: 14px; color: #f8fafc; background-color: #0f172a; border: 1px solid #334155;',
+        th: 'padding: 10px 14px; border: 1px solid #334155; font-weight: 600; color: #38bdf8; background-color: #1e293b;',
+        td: 'padding: 10px 14px; border: 1px solid #334155; color: #e2e8f0; background-color: #0f172a;',
+        stripeTd: 'padding: 10px 14px; border: 1px solid #334155; color: #e2e8f0; background-color: #172033;'
+      },
+      'elegant-indigo': {
+        table: 'border-collapse: collapse; width: 100%; font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif; font-size: 14px; color: #1e1b4b; background-color: #ffffff; border: 1px solid #c7d2fe;',
+        th: 'padding: 12px 16px; border: 1px solid #6366f1; font-weight: 600; color: #ffffff; background-color: #4f46e5;',
+        td: 'padding: 10px 16px; border: 1px solid #e0e7ff; color: #312e81; background-color: #ffffff;',
+        stripeTd: 'padding: 10px 16px; border: 1px solid #e0e7ff; color: #312e81; background-color: #f8faff;'
+      },
+      'stripe-zebra': {
+        table: 'border-collapse: collapse; width: 100%; font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif; font-size: 14px; color: #1f2937; border: 1px solid #cbd5e1;',
+        th: 'padding: 11px 14px; border: 1px solid #334155; font-weight: 600; color: #ffffff; background-color: #1e293b;',
+        td: 'padding: 10px 14px; border: 1px solid #cbd5e1; color: #334155; background-color: #ffffff;',
+        stripeTd: 'padding: 10px 14px; border: 1px solid #cbd5e1; color: #334155; background-color: #f1f5f9;'
+      },
+      'minimalist': {
+        table: 'border-collapse: collapse; width: 100%; font-family: Georgia, serif; font-size: 15px; color: #111827; border-top: 2px solid #111827; border-bottom: 2px solid #111827;',
+        th: 'padding: 12px 18px; border-bottom: 1px solid #111827; font-weight: 700; color: #111827; text-transform: uppercase; font-size: 12px; letter-spacing: 0.05em;',
+        td: 'padding: 12px 18px; border-bottom: 1px solid #f3f4f6; color: #374151;',
+        stripeTd: 'padding: 12px 18px; border-bottom: 1px solid #f3f4f6; color: #374151;'
+      }
+    };
+
+    function parseCSV(text) {
+      const rows = [];
+      let currentRow = [];
+      let currentCell = '';
+      let inQuotes = false;
+      for (let i = 0; i < text.length; i++) {
+        const char = text[i];
+        const nextChar = text[i + 1];
+        if (char === '"') {
+          if (inQuotes && nextChar === '"') {
+            currentCell += '"';
+            i++;
+          } else {
+            inQuotes = !inQuotes;
+          }
+        } else if (char === ',' && !inQuotes) {
+          currentRow.push(currentCell.trim());
+          currentCell = '';
+        } else if ((char === '\r' || char === '\n') && !inQuotes) {
+          if (char === '\r' && nextChar === '\n') i++;
+          currentRow.push(currentCell.trim());
+          if (currentRow.some(c => c !== '')) rows.push(currentRow);
+          currentRow = [];
+          currentCell = '';
+        } else {
+          currentCell += char;
+        }
+      }
+      if (currentCell !== '' || currentRow.length > 0) {
+        currentRow.push(currentCell.trim());
+        if (currentRow.some(c => c !== '')) rows.push(currentRow);
+      }
+      return rows;
+    }
+
+    function parseTSV(text) {
+      const lines = text.split(/\r?\n/).filter(l => l.trim().length > 0);
+      return lines.map(line => line.split('\t').map(c => c.trim()));
+    }
+
+    function parseMarkdown(text) {
+      const lines = text.split(/\r?\n/).map(l => l.trim()).filter(l => l.length > 0 && l.includes('|'));
+      if (lines.length < 2) return null;
+
+      const extractCells = (line) => {
+        let content = line;
+        if (content.startsWith('|')) content = content.substring(1);
+        if (content.endsWith('|')) content = content.substring(0, content.length - 1);
+        return content.split('|').map(c => c.trim());
+      };
+
+      const rawHeaders = extractCells(lines[0]);
+      let alignments = [];
+      let dataStartIndex = 1;
+
+      if (lines.length > 1) {
+        const sepLine = lines[1];
+        if (/^\|?\s*:?-+:?\s*(\|?\s*:?-+:?\s*)+\|?$/.test(sepLine)) {
+          const sepCells = extractCells(sepLine);
+          alignments = sepCells.map(cell => {
+            const hasLeft = cell.startsWith(':');
+            const hasRight = cell.endsWith(':');
+            if (hasLeft && hasRight) return 'center';
+            if (hasRight) return 'right';
+            return 'left';
+          });
+          dataStartIndex = 2;
+        }
+      }
+
+      const rows = [];
+      for (let i = dataStartIndex; i < lines.length; i++) {
+        if (/^\|?\s*:?-+:?\s*(\|?\s*:?-+:?\s*)+\|?$/.test(lines[i])) continue;
+        const rowCells = extractCells(lines[i]);
+        while (rowCells.length < rawHeaders.length) rowCells.push('');
+        rows.push(rowCells.slice(0, rawHeaders.length));
+      }
+
+      return {
+        headers: rawHeaders,
+        alignments: alignments.length === rawHeaders.length ? alignments : rawHeaders.map(() => 'left'),
+        rows: rows
+      };
+    }
+
+    function detectFormat(text) {
+      const lines = text.trim().split(/\r?\n/).filter(l => l.trim().length > 0);
+      if (lines.length === 0) return 'empty';
+
+      const hasMdSep = lines.some(l => /^\|?\s*:?-+:?\s*(\|?\s*:?-+:?\s*)+\|?$/.test(l.trim()));
+      if (hasMdSep) return 'markdown';
+
+      const tabCount = (text.match(/\t/g) || []).length;
+      const commaCount = (text.match(/,/g) || []).length;
+
+      if (tabCount > 0 && tabCount >= commaCount) return 'tsv';
+      if (commaCount > 0) return 'csv';
+      if (lines[0].includes('|')) return 'markdown';
+
+      return 'csv';
+    }
+
+    function updateFromRawInput() {
+      const inputEl = document.getElementById('raw-input');
+      const text = inputEl.value;
+      if (!text.trim()) {
+        updateStats(0, 0, 0);
+        return;
+      }
+
+      const format = detectFormat(text);
+      state.detectedFormat = format;
+      updateFormatBadge(format);
+
+      let parsed = null;
+      if (format === 'markdown') {
+        parsed = parseMarkdown(text);
+      } else if (format === 'tsv') {
+        const raw = parseTSV(text);
+        if (raw.length > 0) {
+          parsed = {
+            headers: raw[0],
+            alignments: raw[0].map(() => 'left'),
+            rows: raw.slice(1)
+          };
+        }
+      } else {
+        const raw = parseCSV(text);
+        if (raw.length > 0) {
+          parsed = {
+            headers: raw[0],
+            alignments: raw[0].map(() => 'left'),
+            rows: raw.slice(1)
+          };
+        }
+      }
+
+      if (parsed && parsed.headers.length > 0) {
+        state.headers = parsed.headers;
+        state.alignments = parsed.alignments || parsed.headers.map(() => 'left');
+        state.rows = parsed.rows;
+        renderTable();
+      }
+
+      updateStats(state.rows.length + 1, state.headers.length, text.length);
+    }
+
+    function renderTable() {
+      const table = document.getElementById('preview-table');
+      table.className = `theme-${state.currentTheme} min-w-full text-sm rounded-lg overflow-hidden transition-all duration-200`;
+
+      const badge = document.getElementById('preview-dim-badge');
+      if (badge) {
+        badge.textContent = `${state.rows.length} 行 × ${state.headers.length} 列`;
+      }
+
+      let html = '';
+
+      html += '<thead><tr>';
+      html += '<th class="w-10 px-2 py-3 text-center no-capture text-slate-400 font-normal">#</th>';
+
+      state.headers.forEach((header, colIdx) => {
+        const align = state.alignments[colIdx] || 'left';
+        const alignIcon = align === 'center' ? 'align-center' : align === 'right' ? 'align-right' : 'align-left';
+
+        html += `
+          <th class="px-4 py-3 relative group" style="text-align: ${align}">
+            <div class="flex items-center justify-between gap-2">
+              <span
+                contenteditable="true"
+                class="flex-1 cursor-text focus:outline-none"
+                onblur="updateHeader(${colIdx}, this.innerText)"
+                title="クリックして列名を編集"
+              >${escapeHTML(header)}</span>
+              <div class="flex items-center gap-1 opacity-0 group-hover:opacity-100 transition-opacity no-capture">
+                <button
+                  onclick="cycleAlignment(${colIdx})"
+                  class="p-1 rounded hover:bg-slate-500/20 text-slate-400 hover:text-slate-200 transition"
+                  title="配置切替 (左 / 中央 / 右)"
+                >
+                  <i data-lucide="${alignIcon}" class="w-3.5 h-3.5"></i>
+                </button>
+                <button
+                  onclick="deleteColumn(${colIdx})"
+                  class="p-1 rounded hover:bg-rose-500/20 text-slate-400 hover:text-rose-400 transition"
+                  title="この列を削除"
+                >
+                  <i data-lucide="x" class="w-3.5 h-3.5"></i>
+                </button>
+              </div>
+            </div>
+          </th>
+        `;
+      });
+      html += '</tr></thead>';
+
+      html += '<tbody>';
+      if (state.rows.length === 0) {
+        html += `<tr><td colspan="${state.headers.length + 1}" class="text-center py-8 text-slate-400 italic">データ行がありません。[行追加] をクリックしてください。</td></tr>`;
+      } else {
+        state.rows.forEach((row, rowIdx) => {
+          html += '<tr class="group">';
+          html += `
+            <td class="w-10 px-2 py-2 text-center text-xs text-slate-400 no-capture bg-slate-900/10">
+              <div class="flex items-center justify-center relative">
+                <span class="group-hover:hidden">${rowIdx + 1}</span>
+                <button
+                  onclick="deleteRow(${rowIdx})"
+                  class="hidden group-hover:inline-flex p-1 rounded hover:bg-rose-500/20 text-rose-400 transition"
+                  title="この行を削除"
+                >
+                  <i data-lucide="trash-2" class="w-3 h-3"></i>
+                </button>
+              </div>
+            </td>
+          `;
+
+          state.headers.forEach((_, colIdx) => {
+            const cellVal = row[colIdx] || '';
+            const align = state.alignments[colIdx] || 'left';
+            html += `
+              <td
+                contenteditable="true"
+                class="px-4 py-2.5 cursor-text focus:outline-none"
+                style="text-align: ${align}"
+                onblur="updateCell(${rowIdx}, ${colIdx}, this.innerText)"
+              >${escapeHTML(cellVal)}</td>
+            `;
+          });
+          html += '</tr>';
+        });
+      }
+      html += '</tbody>';
+
+      table.innerHTML = html;
+      lucide.createIcons();
+    }
+
+    function updateHeader(colIdx, newText) {
+      state.headers[colIdx] = newText.trim();
+    }
+
+    function updateCell(rowIdx, colIdx, newText) {
+      if (!state.rows[rowIdx]) return;
+      while (state.rows[rowIdx].length <= colIdx) {
+        state.rows[rowIdx].push('');
+      }
+      state.rows[rowIdx][colIdx] = newText.trim();
+    }
+
+    function cycleAlignment(colIdx) {
+      const current = state.alignments[colIdx] || 'left';
+      const order = ['left', 'center', 'right'];
+      const nextIndex = (order.indexOf(current) + 1) % order.length;
+      state.alignments[colIdx] = order[nextIndex];
+      renderTable();
+      showToast(`列 [${state.headers[colIdx]}] を ${state.alignments[colIdx]} に配置しました`, 'info');
+    }
+
+    function addRow() {
+      const newRow = state.headers.map(() => '新規データ');
+      state.rows.push(newRow);
+      renderTable();
+      showToast('新しい行を追加しました', 'success');
+    }
+
+    function addColumn() {
+      const colNum = state.headers.length + 1;
+      state.headers.push(`列 ${colNum}`);
+      state.alignments.push('left');
+      state.rows.forEach(r => r.push(''));
+      renderTable();
+      showToast('新しい列を追加しました', 'success');
+    }
+
+    function deleteRow(rowIdx) {
+      if (state.rows.length <= 1) {
+        showToast('最低1行は必要です', 'warning');
+        return;
+      }
+      state.rows.splice(rowIdx, 1);
+      renderTable();
+      showToast('行を削除しました', 'info');
+    }
+
+    function deleteColumn(colIdx) {
+      if (state.headers.length <= 1) {
+        showToast('最低1列は必要です', 'warning');
+        return;
+      }
+      state.headers.splice(colIdx, 1);
+      state.alignments.splice(colIdx, 1);
+      state.rows.forEach(r => r.splice(colIdx, 1));
+      renderTable();
+      showToast('列を削除しました', 'info');
+    }
+
+    function setTheme(themeKey) {
+      state.currentTheme = themeKey;
+
+      document.querySelectorAll('.theme-btn').forEach(btn => {
+        btn.classList.remove('border-brand-500', 'bg-brand-500/10', 'text-brand-300');
+        btn.classList.add('border-slate-800', 'bg-slate-800/40', 'text-slate-400');
+      });
+      const activeBtn = document.getElementById(`theme-btn-${themeKey}`);
+      if (activeBtn) {
+        activeBtn.classList.remove('border-slate-800', 'bg-slate-800/40', 'text-slate-400');
+        activeBtn.classList.add('border-brand-500', 'bg-brand-500/10', 'text-brand-300');
+      }
+
+      const card = document.getElementById('table-capture-card');
+      if (themeKey === 'modern-dark') {
+        card.style.backgroundColor = '#0b1120';
+      } else {
+        card.style.backgroundColor = 'transparent';
+      }
+
+      renderTable();
+      showToast(`テーマ [${themeKey}] を適用しました`, 'info');
+    }
+
+    function generateMarkdownString() {
+      if (state.headers.length === 0) return '';
+
+      const colWidths = state.headers.map((h, colIdx) => {
+        let maxW = getStringWidth(h);
+        state.rows.forEach(r => {
+          const cell = r[colIdx] || '';
+          const w = getStringWidth(cell);
+          if (w > maxW) maxW = w;
+        });
+        return Math.max(maxW, 3);
+      });
+
+      let md = '| ' + state.headers.map((h, i) => padString(h, colWidths[i], state.alignments[i])).join(' | ') + ' |\n';
+
+      md += '| ' + colWidths.map((w, i) => {
+        const align = state.alignments[i] || 'left';
+        if (align === 'center') return ':' + '-'.repeat(Math.max(w - 2, 1)) + ':';
+        if (align === 'right') return '-'.repeat(Math.max(w - 1, 1)) + ':';
+        return ':' + '-'.repeat(Math.max(w - 1, 1));
+      }).join(' | ') + ' |\n';
+
+      state.rows.forEach(r => {
+        md += '| ' + state.headers.map((_, i) => {
+          const cell = r[i] || '';
+          return padString(cell, colWidths[i], state.alignments[i]);
+        }).join(' | ') + ' |\n';
+      });
+
+      return md;
+    }
+
+    function generateRichHTMLString() {
+      const styles = THEME_INLINE_STYLES[state.currentTheme] || THEME_INLINE_STYLES['notion'];
+      let html = `<table style="${styles.table}">\n`;
+      html += '  <thead>\n    <tr>\n';
+      state.headers.forEach((h, i) => {
+        const align = state.alignments[i] || 'left';
+        html += `      <th style="${styles.th} text-align: ${align};">${escapeHTML(h)}</th>\n`;
+      });
+      html += '    </tr>\n  </thead>\n  <tbody>\n';
+      state.rows.forEach((row, rIdx) => {
+        const isStripe = rIdx % 2 === 1;
+        html += '    <tr>\n';
+        state.headers.forEach((_, cIdx) => {
+          const cell = row[cIdx] || '';
+          const align = state.alignments[cIdx] || 'left';
+          const cellStyle = isStripe ? styles.stripeTd : styles.td;
+          html += `      <td style="${cellStyle} text-align: ${align};">${escapeHTML(cell)}</td>\n`;
+        });
+        html += '    </tr>\n';
+      });
+      html += '  </tbody>\n</table>';
+      return html;
+    }
+
+    function generateCSVString() {
+      const escapeCSV = (val) => {
+        const s = String(val == null ? '' : val);
+        if (s.includes('"') || s.includes(',') || s.includes('\n') || s.includes('\r')) {
+          return `"${s.replace(/"/g, '""')}"`;
+        }
+        return s;
+      };
+
+      let csv = state.headers.map(escapeCSV).join(',') + '\n';
+      state.rows.forEach(r => {
+        csv += state.headers.map((_, i) => escapeCSV(r[i] || '')).join(',') + '\n';
+      });
+      return csv;
+    }
+
+    function generateJSONString() {
+      const list = state.rows.map(row => {
+        const obj = {};
+        state.headers.forEach((h, i) => {
+          obj[h] = row[i] || '';
+        });
+        return obj;
+      });
+      return JSON.stringify(list, null, 2);
+    }
+
+    async function copyAsMarkdown() {
+      const md = generateMarkdownString();
+      await navigator.clipboard.writeText(md);
+      showToast('Markdownをクリップボードにコピーしました！', 'success');
+    }
+
+    async function copyAsCSV() {
+      const csv = generateCSVString();
+      await navigator.clipboard.writeText(csv);
+      showToast('CSV形式でコピーしました！', 'success');
+    }
+
+    async function copyAsJSON() {
+      const json = generateJSONString();
+      await navigator.clipboard.writeText(json);
+      showToast('JSON形式でコピーしました！', 'success');
+    }
+
+    async function copyAsRichHTML() {
+      try {
+        const html = generateRichHTMLString();
+        const plain = generateMarkdownString();
+
+        if (navigator.clipboard && navigator.clipboard.write) {
+          const blobHtml = new Blob([html], { type: 'text/html' });
+          const blobPlain = new Blob([plain], { type: 'text/plain' });
+          await navigator.clipboard.write([
+            new ClipboardItem({
+              'text/html': blobHtml,
+              'text/plain': blobPlain
+            })
+          ]);
+          showToast('✨ デザイン付きリッチHTMLをコピーしました！(Word/Docsにそのままペースト可能)', 'success');
+        } else {
+          await navigator.clipboard.writeText(html);
+          showToast('HTMLコードをコピーしました', 'info');
+        }
+      } catch (err) {
+        console.error('Rich copy failed:', err);
+        const html = generateRichHTMLString();
+        await navigator.clipboard.writeText(html);
+        showToast('HTMLコードをクリップボードにコピーしました', 'info');
+      }
+    }
+
+    async function downloadAsPNG() {
+      try {
+        showToast('高解像度画像を生成中...', 'info');
+
+        document.querySelectorAll('.no-capture').forEach(el => el.style.display = 'none');
+
+        const card = document.getElementById('table-capture-card');
+        const canvas = await html2canvas(card, {
+          scale: 2,
+          useCORS: true,
+          backgroundColor: state.currentTheme === 'modern-dark' ? '#0f172a' : '#ffffff',
+          logging: false
+        });
+
+        document.querySelectorAll('.no-capture').forEach(el => el.style.display = '');
+
+        const image = canvas.toDataURL('image/png');
+        const link = document.createElement('a');
+        link.download = `tablecraft-${state.currentTheme}-${Date.now()}.png`;
+        link.href = image;
+        link.click();
+
+        showToast('高解像度PNG画像をダウンロードしました！', 'success');
+      } catch (err) {
+        console.error('PNG capture error:', err);
+        document.querySelectorAll('.no-capture').forEach(el => el.style.display = '');
+        showToast('画像生成に失敗しました', 'warning');
+      }
+    }
+
+    function loadSample(sampleType) {
+      const sampleText = SAMPLES[sampleType] || SAMPLES.markdown;
+      const inputEl = document.getElementById('raw-input');
+      inputEl.value = sampleText;
+      updateFromRawInput();
+      showToast(`${sampleType.toUpperCase()} サンプルを読み込みました`, 'info');
+    }
+
+    function clearInput() {
+      document.getElementById('raw-input').value = '';
+      state.headers = ["項目", "値"];
+      state.alignments = ["left", "left"];
+      state.rows = [["", ""]];
+      renderTable();
+      updateStats(0, 0, 0);
+      showToast('入力をクリアしました', 'info');
+    }
+
+    function syncPreviewToInput() {
+      const md = generateMarkdownString();
+      document.getElementById('raw-input').value = md;
+      updateFromRawInput();
+      showToast('プレビューの編集内容を入力エリアに同期しました', 'success');
+    }
+
+    function updateStats(rows, cols, chars) {
+      document.getElementById('input-stats-rows').textContent = `${rows} 行`;
+      document.getElementById('input-stats-cols').textContent = `${cols} 列`;
+      document.getElementById('input-stats-chars').textContent = `${chars.toLocaleString()} 文字`;
+    }
+
+    function updateFormatBadge(format) {
+      const textEl = document.getElementById('detected-format-text');
+      const labels = {
+        markdown: 'Markdown テーブル検出',
+        csv: 'CSV カンマ区切り検出',
+        tsv: 'Excel / TSV 検出',
+        empty: '入力待機中'
+      };
+      textEl.textContent = labels[format] || format.toUpperCase();
+    }
+
+    function escapeHTML(str) {
+      return String(str == null ? '' : str)
+        .replace(/&/g, '&amp;')
+        .replace(/</g, '&lt;')
+        .replace(/>/g, '&gt;')
+        .replace(/"/g, '&quot;')
+        .replace(/'/g, '&#039;');
+    }
+
+    function getStringWidth(str) {
+      let width = 0;
+      const s = String(str);
+      for (let i = 0; i < s.length; i++) {
+        const code = s.charCodeAt(i);
+        if ((code >= 0x0020 && code <= 0x1fff) || (code >= 0xff61 && code <= 0xff9f)) {
+          width += 1;
+        } else {
+          width += 2;
+        }
+      }
+      return width;
+    }
+
+    function padString(str, targetWidth, align = 'left') {
+      const s = String(str);
+      const curW = getStringWidth(s);
+      const diff = Math.max(0, targetWidth - curW);
+      if (align === 'right') {
+        return ' '.repeat(diff) + s;
+      } else if (align === 'center') {
+        const left = Math.floor(diff / 2);
+        const right = diff - left;
+        return ' '.repeat(left) + s + ' '.repeat(right);
+      } else {
+        return s + ' '.repeat(diff);
+      }
+    }
+
+    function showToast(message, type = 'info') {
+      const container = document.getElementById('toast-container');
+      const toast = document.createElement('div');
+
+      const typeStyles = {
+        success: 'bg-emerald-950/90 border-emerald-500/40 text-emerald-200',
+        info: 'bg-slate-900/95 border-brand-500/40 text-slate-100',
+        warning: 'bg-amber-950/90 border-amber-500/40 text-amber-200'
+      };
+
+      const icons = {
+        success: '<i data-lucide="check-circle-2" class="w-4 h-4 text-emerald-400"></i>',
+        info: '<i data-lucide="info" class="w-4 h-4 text-brand-400"></i>',
+        warning: '<i data-lucide="alert-triangle" class="w-4 h-4 text-amber-400"></i>'
+      };
+
+      toast.className = `pointer-events-auto flex items-center gap-2.5 px-4 py-3 rounded-xl border shadow-2xl backdrop-blur-md text-xs font-medium transition-all transform duration-300 translate-y-4 opacity-0 ${typeStyles[type] || typeStyles.info}`;
+      toast.innerHTML = `
+        ${icons[type] || icons.info}
+        <span>${escapeHTML(message)}</span>
+      `;
+
+      container.appendChild(toast);
+      lucide.createIcons();
+
+      requestAnimationFrame(() => {
+        toast.classList.remove('translate-y-4', 'opacity-0');
+      });
+
+      setTimeout(() => {
+        toast.classList.add('opacity-0', 'translate-y-2');
+        setTimeout(() => toast.remove(), 300);
+      }, 3200);
+    }
+
+    // Modal Handlers
+    function openModal(id) {
+      if (id === 'privacy') {
+        document.getElementById('legal-modal').classList.remove('hidden');
+        document.getElementById('legal-modal').classList.add('flex');
+      }
+    }
+
+    function closeModal(id) {
+      if (id === 'privacy') {
+        document.getElementById('legal-modal').classList.add('hidden');
+        document.getElementById('legal-modal').classList.remove('flex');
+      }
+    }
+
+    window.addEventListener('DOMContentLoaded', () => {
+      let timer = null;
+      const inputEl = document.getElementById('raw-input');
+      inputEl.addEventListener('input', () => {
+        clearTimeout(timer);
+        timer = setTimeout(updateFromRawInput, 150);
+      });
+
+      loadSample('markdown');
+    });
+  </script>
+</body>
+</html>
