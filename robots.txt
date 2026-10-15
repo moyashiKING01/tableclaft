@@ -1,4 +1,4 @@
 User-agent: *
 Allow: /
 
-Sitemap: https://tablecraft.vercel.app/sitemap.xml
+Sitemap: https://moyashiking01.github.io/tableclaft/sitemap.xml
